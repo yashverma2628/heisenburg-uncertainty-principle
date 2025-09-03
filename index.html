@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heisenberg Uncertainty Principle Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .formula-display {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .formula {
+            font-size: 1.3em;
+            color: #495057;
+            margin: 5px 0;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .calculator-section {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e9ecef;
+        }
+
+        .section-title {
+            color: #495057;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 500;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f8f9fa;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #495057;
+            min-width: 60px;
+            font-size: 1.1em;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        select {
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+            min-width: 120px;
+            transition: all 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .result {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: 500;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .constants-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .constants-title {
+            font-size: 1.2em;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .constant {
+            margin-bottom: 8px;
+            color: #666;
+            font-family: 'Courier New', monospace;
+        }
+
+        .example-section {
+            background: #e3f2fd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .example-title {
+            font-size: 1.2em;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: #1976d2;
+        }
+
+        .example {
+            margin-bottom: 10px;
+            color: #424242;
+        }
+
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .clear-btn:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .scientific {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+                margin-bottom: 5px;
+            }
+            
+            .subtitle {
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+            
+            .formula-display {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+            
+            .formula {
+                font-size: 1.1em;
+            }
+            
+            .calculator-section {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+            
+            .input-row {
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+            
+            label {
+                min-width: auto;
+                font-size: 1em;
+                text-align: left;
+            }
+            
+            input[type="number"], select {
+                width: 100%;
+                padding: 12px;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+            
+            .result {
+                font-size: 1em;
+                padding: 12px;
+                line-height: 1.4;
+            }
+            
+            .constants-section, .example-section {
+                padding: 15px;
+                margin-top: 15px;
+            }
+            
+            .constants-title, .example-title {
+                font-size: 1.1em;
+            }
+            
+            .constant, .example {
+                font-size: 0.9em;
+                line-height: 1.3;
+            }
+            
+            .clear-btn {
+                width: 100%;
+                margin-top: 8px;
+                padding: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 12px;
+                margin: 5px;
+                border-radius: 15px;
+            }
+            
+            h1 {
+                font-size: 1.6em;
+                line-height: 1.2;
+            }
+            
+            .subtitle {
+                font-size: 0.95em;
+            }
+            
+            .formula-display {
+                padding: 12px;
+            }
+            
+            .formula {
+                font-size: 1em;
+            }
+            
+            .calculator-section {
+                padding: 15px;
+            }
+            
+            .section-title {
+                font-size: 1.1em;
+            }
+            
+            input[type="number"], select {
+                padding: 10px;
+                font-size: 16px;
+            }
+            
+            .result {
+                font-size: 0.9em;
+                padding: 10px;
+                min-height: 40px;
+            }
+            
+            .scientific {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Heisenberg Uncertainty Principle Calculator</h1>
+        <p class="subtitle">Explore the fundamental limits of quantum measurements</p>
+        
+        <div class="formula-display">
+            <div class="formula">Δx × Δp ≥ ℏ/2</div>
+            <div class="formula">ΔE × Δt ≥ ℏ/2</div>
+            <div style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                Where ℏ = 1.054571817 × 10⁻³⁴ J·s (reduced Planck constant)
+            </div>
+        </div>
+
+        <div class="calculator-grid">
+            <!-- Position-Momentum Calculator -->
+            <div class="calculator-section">
+                <h2 class="section-title">Position-Momentum Uncertainty</h2>
+                
+                <div class="input-group">
+                    <div class="input-row">
+                        <label>Δx:</label>
+                        <input type="number" id="delta-x" placeholder="Enter position uncertainty" step="any">
+                        <select id="delta-x-unit">
+                            <option value="m">meters (m)</option>
+                            <option value="nm">nanometers (nm)</option>
+                            <option value="pm">picometers (pm)</option>
+                            <option value="fm">femtometers (fm)</option>
+                            <option value="bohr">Bohr radius (a₀)</option>
+                        </select>
+                    </div>
+                    <button class="clear-btn" onclick="clearInput('delta-x')">Clear</button>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-row">
+                        <label>Δp:</label>
+                        <input type="number" id="delta-p" placeholder="Enter momentum uncertainty" step="any">
+                        <select id="delta-p-unit">
+                            <option value="kg_ms">kg⋅m/s</option>
+                            <option value="g_cms">g⋅cm/s</option>
+                            <option value="eV_c">eV/c</option>
+                            <option value="MeV_c">MeV/c</option>
+                        </select>
+                    </div>
+                    <button class="clear-btn" onclick="clearInput('delta-p')">Clear</button>
+                </div>
+
+                <div class="result" id="position-momentum-result">
+                    Enter a value to calculate the minimum uncertainty
+                </div>
+            </div>
+
+            <!-- Energy-Time Calculator -->
+            <div class="calculator-section">
+                <h2 class="section-title">Energy-Time Uncertainty</h2>
+                
+                <div class="input-group">
+                    <div class="input-row">
+                        <label>ΔE:</label>
+                        <input type="number" id="delta-e" placeholder="Enter energy uncertainty" step="any">
+                        <select id="delta-e-unit">
+                            <option value="J">Joules (J)</option>
+                            <option value="eV">electron volts (eV)</option>
+                            <option value="meV">millielectron volts (meV)</option>
+                            <option value="keV">kiloelectron volts (keV)</option>
+                            <option value="MeV">megaelectron volts (MeV)</option>
+                        </select>
+                    </div>
+                    <button class="clear-btn" onclick="clearInput('delta-e')">Clear</button>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-row">
+                        <label>Δt:</label>
+                        <input type="number" id="delta-t" placeholder="Enter time uncertainty" step="any">
+                        <select id="delta-t-unit">
+                            <option value="s">seconds (s)</option>
+                            <option value="ms">milliseconds (ms)</option>
+                            <option value="us">microseconds (μs)</option>
+                            <option value="ns">nanoseconds (ns)</option>
+                            <option value="ps">picoseconds (ps)</option>
+                            <option value="fs">femtoseconds (fs)</option>
+                        </select>
+                    </div>
+                    <button class="clear-btn" onclick="clearInput('delta-t')">Clear</button>
+                </div>
+
+                <div class="result" id="energy-time-result">
+                    Enter a value to calculate the minimum uncertainty
+                </div>
+            </div>
+        </div>
+
+        <div class="constants-section">
+            <div class="constants-title">Physical Constants Used</div>
+            <div class="constant">ℏ (reduced Planck constant) = 1.054571817 × 10⁻³⁴ J⋅s</div>
+            <div class="constant">c (speed of light) = 2.99792458 × 10⁸ m/s</div>
+            <div class="constant">Bohr radius (a₀) = 5.29177211 × 10⁻¹¹ m</div>
+        </div>
+
+        <div class="example-section">
+            <div class="example-title">Example Scenarios</div>
+            <div class="example"><strong>Electron in atom:</strong> Δx ≈ 0.1 nm → Δp ≈ 1.05 × 10⁻²⁴ kg⋅m/s</div>
+            <div class="example"><strong>Photon measurement:</strong> ΔE ≈ 1 eV → Δt ≈ 6.58 × 10⁻¹⁶ s</div>
+            <div class="example"><strong>Nuclear scale:</strong> Δx ≈ 1 fm → Δp ≈ 1.05 × 10⁻¹⁹ kg⋅m/s</div>
+        </div>
+    </div>
+
+    <script>
+        // Physical constants
+        const HBAR = 1.054571817e-34; // J⋅s
+        const C = 2.99792458e8; // m/s
+        const BOHR_RADIUS = 5.29177211e-11; // m
+        const EV_TO_J = 1.602176634e-19; // J/eV
+
+        // Unit conversion factors to base SI units
+        const positionUnits = {
+            'm': 1,
+            'nm': 1e-9,
+            'pm': 1e-12,
+            'fm': 1e-15,
+            'bohr': BOHR_RADIUS
+        };
+
+        const momentumUnits = {
+            'kg_ms': 1,
+            'g_cms': 1e-5,
+            'eV_c': EV_TO_J / C,
+            'MeV_c': 1e6 * EV_TO_J / C
+        };
+
+        const energyUnits = {
+            'J': 1,
+            'eV': EV_TO_J,
+            'meV': 1e-3 * EV_TO_J,
+            'keV': 1e3 * EV_TO_J,
+            'MeV': 1e6 * EV_TO_J
+        };
+
+        const timeUnits = {
+            's': 1,
+            'ms': 1e-3,
+            'us': 1e-6,
+            'ns': 1e-9,
+            'ps': 1e-12,
+            'fs': 1e-15
+        };
+
+        function formatScientific(num, decimals = 3) {
+            if (num === 0) return '0';
+            
+            // Convert scientific notation from "e" format to "× 10^" format
+            let expNotation = num.toExponential(decimals);
+            let parts = expNotation.split('e');
+            let mantissa = parts[0];
+            let exponent = parseInt(parts[1]);
+            
+            // Handle special cases
+            if (exponent === 0) {
+                return mantissa;
+            }
+            
+            return `${mantissa} × 10<sup>${exponent}</sup>`;
+        }
+
+        function clearInput(inputId) {
+            document.getElementById(inputId).value = '';
+            calculateUncertainty();
+        }
+
+        function calculatePositionMomentum() {
+            const deltaXInput = document.getElementById('delta-x').value;
+            const deltaPInput = document.getElementById('delta-p').value;
+            const deltaXUnit = document.getElementById('delta-x-unit').value;
+            const deltaPUnit = document.getElementById('delta-p-unit').value;
+            const resultDiv = document.getElementById('position-momentum-result');
+
+            if (deltaXInput && !deltaPInput) {
+                // Calculate Δp from Δx
+                const deltaX = parseFloat(deltaXInput) * positionUnits[deltaXUnit];
+                const minDeltaP = HBAR / (2 * deltaX);
+                const deltaPInUnit = minDeltaP / momentumUnits[deltaPUnit];
+                
+                resultDiv.innerHTML = `
+                    Minimum Δp ≥ <span class="scientific">${formatScientific(deltaPInUnit)}</span> ${getDeltaPUnitDisplay(deltaPUnit)}
+                    <br><small>In SI units: ${formatScientific(minDeltaP)} kg⋅m/s</small>
+                `;
+            } else if (deltaPInput && !deltaXInput) {
+                // Calculate Δx from Δp
+                const deltaP = parseFloat(deltaPInput) * momentumUnits[deltaPUnit];
+                const minDeltaX = HBAR / (2 * deltaP);
+                const deltaXInUnit = minDeltaX / positionUnits[deltaXUnit];
+                
+                resultDiv.innerHTML = `
+                    Minimum Δx ≥ <span class="scientific">${formatScientific(deltaXInUnit)}</span> ${getDeltaXUnitDisplay(deltaXUnit)}
+                    <br><small>In SI units: ${formatScientific(minDeltaX)} m</small>
+                `;
+            } else if (deltaXInput && deltaPInput) {
+                // Check if uncertainty relation is satisfied
+                const deltaX = parseFloat(deltaXInput) * positionUnits[deltaXUnit];
+                const deltaP = parseFloat(deltaPInput) * momentumUnits[deltaPUnit];
+                const product = deltaX * deltaP;
+                const minProduct = HBAR / 2;
+                
+                const satisfied = product >= minProduct;
+                const ratio = product / minProduct;
+                
+                resultDiv.innerHTML = `
+                    Δx × Δp = <span class="scientific">${formatScientific(product)}</span> J⋅s
+                    <br>ℏ/2 = <span class="scientific">${formatScientific(minProduct)}</span> J⋅s
+                    <br><strong style="color: ${satisfied ? '#28a745' : '#dc3545'}">
+                        ${satisfied ? '✓ Uncertainty relation satisfied' : '✗ Violates uncertainty principle'}
+                    </strong>
+                    <br><small>Ratio: ${ratio.toFixed(2)}× minimum</small>
+                `;
+            } else {
+                resultDiv.textContent = 'Enter a value to calculate the minimum uncertainty';
+            }
+        }
+
+        function calculateEnergyTime() {
+            const deltaEInput = document.getElementById('delta-e').value;
+            const deltaTInput = document.getElementById('delta-t').value;
+            const deltaEUnit = document.getElementById('delta-e-unit').value;
+            const deltaTUnit = document.getElementById('delta-t-unit').value;
+            const resultDiv = document.getElementById('energy-time-result');
+
+            if (deltaEInput && !deltaTInput) {
+                // Calculate Δt from ΔE
+                const deltaE = parseFloat(deltaEInput) * energyUnits[deltaEUnit];
+                const minDeltaT = HBAR / (2 * deltaE);
+                const deltaTInUnit = minDeltaT / timeUnits[deltaTUnit];
+                
+                resultDiv.innerHTML = `
+                    Minimum Δt ≥ <span class="scientific">${formatScientific(deltaTInUnit)}</span> ${getDeltaTUnitDisplay(deltaTUnit)}
+                    <br><small>In SI units: ${formatScientific(minDeltaT)} s</small>
+                `;
+            } else if (deltaTInput && !deltaEInput) {
+                // Calculate ΔE from Δt
+                const deltaT = parseFloat(deltaTInput) * timeUnits[deltaTUnit];
+                const minDeltaE = HBAR / (2 * deltaT);
+                const deltaEInUnit = minDeltaE / energyUnits[deltaEUnit];
+                
+                resultDiv.innerHTML = `
+                    Minimum ΔE ≥ <span class="scientific">${formatScientific(deltaEInUnit)}</span> ${getDeltaEUnitDisplay(deltaEUnit)}
+                    <br><small>In SI units: ${formatScientific(minDeltaE)} J</small>
+                `;
+            } else if (deltaEInput && deltaTInput) {
+                // Check if uncertainty relation is satisfied
+                const deltaE = parseFloat(deltaEInput) * energyUnits[deltaEUnit];
+                const deltaT = parseFloat(deltaTInput) * timeUnits[deltaTUnit];
+                const product = deltaE * deltaT;
+                const minProduct = HBAR / 2;
+                
+                const satisfied = product >= minProduct;
+                const ratio = product / minProduct;
+                
+                resultDiv.innerHTML = `
+                    ΔE × Δt = <span class="scientific">${formatScientific(product)}</span> J⋅s
+                    <br>ℏ/2 = <span class="scientific">${formatScientific(minProduct)}</span> J⋅s
+                    <br><strong style="color: ${satisfied ? '#28a745' : '#dc3545'}">
+                        ${satisfied ? '✓ Uncertainty relation satisfied' : '✗ Violates uncertainty principle'}
+                    </strong>
+                    <br><small>Ratio: ${ratio.toFixed(2)}× minimum</small>
+                `;
+            } else {
+                resultDiv.textContent = 'Enter a value to calculate the minimum uncertainty';
+            }
+        }
+
+        function getDeltaXUnitDisplay(unit) {
+            const displays = {
+                'm': 'm',
+                'nm': 'nm',
+                'pm': 'pm',
+                'fm': 'fm',
+                'bohr': 'a₀'
+            };
+            return displays[unit];
+        }
+
+        function getDeltaPUnitDisplay(unit) {
+            const displays = {
+                'kg_ms': 'kg⋅m/s',
+                'g_cms': 'g⋅cm/s',
+                'eV_c': 'eV/c',
+                'MeV_c': 'MeV/c'
+            };
+            return displays[unit];
+        }
+
+        function getDeltaEUnitDisplay(unit) {
+            const displays = {
+                'J': 'J',
+                'eV': 'eV',
+                'meV': 'meV',
+                'keV': 'keV',
+                'MeV': 'MeV'
+            };
+            return displays[unit];
+        }
+
+        function getDeltaTUnitDisplay(unit) {
+            const displays = {
+                's': 's',
+                'ms': 'ms',
+                'us': 'μs',
+                'ns': 'ns',
+                'ps': 'ps',
+                'fs': 'fs'
+            };
+            return displays[unit];
+        }
+
+        function calculateUncertainty() {
+            calculatePositionMomentum();
+            calculateEnergyTime();
+        }
+
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = ['delta-x', 'delta-p', 'delta-e', 'delta-t'];
+            const selects = ['delta-x-unit', 'delta-p-unit', 'delta-e-unit', 'delta-t-unit'];
+            
+            inputs.forEach(id => {
+                document.getElementById(id).addEventListener('input', calculateUncertainty);
+            });
+            
+            selects.forEach(id => {
+                document.getElementById(id).addEventListener('change', calculateUncertainty);
+            });
+        });
+    </script>
+</body>
+</html>
